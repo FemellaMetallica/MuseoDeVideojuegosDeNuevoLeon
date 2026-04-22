@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Museo de Videojuegos de Nuevo León</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: #f5f5f5;
+    margin: 0;
+    padding-top: 60px; /* para que no tape el header */
+}
+
+header {
+    background: #1a1a1a;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background: #1c1c1c;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+details {
+    margin-top: 10px;
+}
+
+summary {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    cursor: pointer;
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #444;
+}
+
+td {
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+/* LINKS GENERALES */
+a {
+    color: #8ab4f8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* PERSONAS */
+#tablaPersonas a { color: #ffd93d; }
+#tablaPersonas a:hover { color: #ffe26b; text-shadow: 0 0 10px rgba(255,217,61,0.6); }
+
+/* VIDEOJUEGOS */
+#tablaJuegos a { color: #80ff80; }
+#tablaJuegos a:hover { color: #b5ffb5; text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+
+/* EMPRESAS */
+#tablaEmpresas a { color: #b99eff; }
+#tablaEmpresas a:hover { color: #dccfff; text-shadow: 0 0 10px rgba(240,180,255,0.7); }
+
+/* REPRODUCTOR */
+#player {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #111;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #333;
+    z-index: 1000;
+}
+
+#player button {
+    background: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Reproductor -->
+<div id="player">
+    Radio Arcade Nuevo León
+    <button onclick="prevTrack()">Anterior</button>
+    <button onclick="togglePlay()" id="playBtn">Reproducir</button>
+    <button onclick="nextTrack()">Siguiente</button>
+    <span id="track"></span>
+</div>
+
+<!-- Audio -->
+<audio id="audio"></audio>
+
+<header>
+    <h1>Museo de Videojuegos de Nuevo León</h1>
+    <p>Preservando nuestra historia y cultura del desarrollo de videojuegos</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Sobre el proyecto</h2>
+        <p>
+            Este museo digital busca registrar y preservar información sobre todos los videojuegos, dibujantes, músicos y desarrolladores del estado de Nuevo León.
+        </p>
+    </div>
+
+    <div class="card">
+        <details>
+            <summary style="font-size: 20px;">Personas</summary>
+            <table id="tablaPersonas">
+                <tr>
+                    <th onclick="sortTable('tablaPersonas', 0)">Nombre</th>
+                    <th onclick="sortTable('tablaPersonas', 1)">Empresa</th>
+                    <th onclick="sortTable('tablaPersonas', 2)">Municipio</th>
+                </tr>
+                <tbody></tbody>
+            </table>
+        </details>
+    </div>
+
+    <div class="card">
+        <details>
+            <summary style="font-size: 20px;">Videojuegos</summary>
+            <table id="tablaJuegos">
+                <tr>
+                    <th onclick="sortTable('tablaJuegos', 0)">Nombre</th>
+                    <th onclick="sortTable('tablaJuegos', 1)">Empresa</th>
+                    <th onclick="sortTable('tablaJuegos', 2)">Lanzamiento</th>
+                    <th onclick="sortTable('tablaJuegos', 3)">Jugable Aquí</th>
+                </tr>
+                <tbody></tbody>
+            </table>
+        </details>
+    </div>
+
+    <div class="card">
+        <details>
+            <summary style="font-size: 20px;">Empresas</summary>
+            <table id="tablaEmpresas">
+                <tr>
+                    <th onclick="sortTable('tablaEmpresas', 0)">Nombre</th>
+                    <th onclick="sortTable('tablaEmpresas', 1)">Fundación</th>
+                </tr>
+                <tbody></tbody>
+            </table>
+        </details>
+    </div>
+
+    <div class="card">
+        <details>
+            <summary style="font-size: 20px;">Música</summary>
+            <table id="tablaMusica">
+                <tr>
+                    <th onclick="sortTable('tablaMusica', 0)">Nombre</th>
+                    <th onclick="sortTable('tablaMusica', 1)">Compositor</th>
+                    <th onclick="sortTable('tablaMusica', 2)">Videojuego</th>
+                </tr>
+                <tbody></tbody>
+            </table>
+        </details>
+    </div>
+
+
+</div>
+
+<header>
+    <p>Si deseas modificar o eliminar tu información, contáctame en Discord @al_saddiq</p>
+</header>
+
+<script>
+function sortTable(tableId, n) {
+  var table = document.getElementById(tableId);
+  var rows = table.rows;
+  var switching = true;
+  var dir = "asc";
+  var switchcount = 0;
+
+  while (switching) {
+    switching = false;
+
+    for (var i = 1; i < (rows.length - 1); i++) {
+      var shouldSwitch = false;
+      var x = rows[i].getElementsByTagName("TD")[n];
+      var y = rows[i + 1].getElementsByTagName("TD")[n];
+
+      if (dir == "asc") {
+        if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      } else {
+        if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      switchcount++;
+    } else {
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+
+/* ===== DATOS ===== */
+let Personas = [
+    {Nombre: "AzureBIT8", Link: "Personas/AzureBIT8.html", Empresa: "-", Municipio: "-"},
+    {Nombre: "CalixJumio", Link: "Personas/CalixJumio.html", Empresa: "-", Municipio: "-"},
+    {Nombre: "Carlos Rodríguez", Link: "Personas/CarlosRodriguez.html", Empresa: "Terralude Game Studio", Municipio: "San Nicolás de los Garza"},
+    {Nombre: "Garuda", Link: "Personas/Garuda.html", Empresa: "Salem Electrónica", Municipio: "Monterrey"},
+    {Nombre: "Martín Alejandro Villareal Vázquez / PrettyScar", Link: "Personas/MartinAlejandroVillarealVazquez.html", Empresa: "-", Municipio: "-"},
+    {Nombre: "Maurimo", Link: "Personas/Maurimo.html", Empresa: "-", Municipio: "-"}
+];
+
+let Juegos = [
+    {Nombre: "A Hopeful Play", Link: "Videojuegos/AHopefulPlay.html", Empresa: "Terralude Game Studio", Lanzamiento: "2021 / 09 / 26", JugableAqui: "Sí"},
+    {Nombre: "Delicious Nightmare 2", Link: "Videojuegos/DeliciousNightmare2.html", Empresa: "Terralude Game Studio", Lanzamiento: "2023 / 04 / 30", JugableAqui: "Sí"},
+    {Nombre: "Flappy Bat", Link: "Videojuegos/FlappyBat.html", Empresa: "AzureBIT8", Lanzamiento: "???? / ?? / ??", JugableAqui: "No"},
+    {Nombre: "Inverter Gun", Link: "Videojuegos/InverterGun.html", Empresa: "Terralude Game Studio", Lanzamiento: "2024 / 08 / 12", JugableAqui: "No"},
+    {Nombre: "Knight of Ice", Link: "Videojuegos/KnightOfIce.html", Empresa: "Terralude Game Studio", Lanzamiento: "2023 / 06 / 29", JugableAqui: "Sí"},
+    {Nombre: "Long Long Train", Link: "Videojuegos/LongLongTrain.html", Empresa: "AzureBIT8", Lanzamiento: "2021 / 09 / 01", JugableAqui: "No"},
+    {Nombre: "Merkava: The Sacred Armour of Meirav", Link: "Videojuegos/MerkavaTheSacredArmourOfMeirav.html", Empresa: "Salem Electrónica", Lanzamiento: "2025 / 07 / 13", JugableAqui: "No"},
+    {Nombre: "MinivAC", Link: "Videojuegos/MinivAC.html", Empresa: "Terralude Game Studio", Lanzamiento: "2021 / 02 / 28", JugableAqui: "Sí"},
+    {Nombre: "MultipLess", Link: "Videojuegos/MultipLess.html", Empresa: "Terralude Game Studio", Lanzamiento: "2021 / 01 / 29", JugableAqui: "Sí"},
+    {Nombre: "Om Nom's picture collection", Link: "Videojuegos/OmNomsPictureCollection.html", Empresa: "Pixel Perfect Studios", Lanzamiento: "2025 / 10 / 08", JugableAqui: "No"},
+    {Nombre: "Ratón Vaquero", Link: "Videojuegos/RatonVaquero.html", Empresa: "AzureBIT8", Lanzamiento: "En Desarrollo", JugableAqui: "No"},
+    {Nombre: "Rockyroid", Link: "Videojuegos/Rockyroid.html", Empresa: "Terralude Game Studio", Lanzamiento: "2023 / 09 / 25", JugableAqui: "Sí"},
+    {Nombre: "Super Crane HD", Link: "Videojuegos/SuperCraneHD.html", Empresa: "CalixJumio", Lanzamiento: "En Desarrollo", JugableAqui: "No"},
+    {Nombre: "Trasmoz: El Canto del Ave de la Muerte", Link: "Videojuegos/TrasmozElCantoDelAveDeLaMuerte.html", Empresa: "Salem Electrónica", Lanzamiento: "En Desarrollo", JugableAqui: "No"},
+    {Nombre: "Tyrants", Link: "Videojuegos/Tyrants.html", Empresa: "Terralude Game Studio", Lanzamiento: "2023 / 07 / 09", JugableAqui: "Sí"},
+    {Nombre: "Uppercute", Link: "Videojuegos/Uppercute.html", Empresa: "Martín Alejandro Villareal Vázquez / PrettyScar", Lanzamiento: "En Desarrollo", JugableAqui: "No"},
+    {Nombre: "Weird Bunny Banana", Link: "Videojuegos/WeirdBunnyBanana.html", Empresa: "Pixel Perfect Studios", Lanzamiento: "2020 / 01 / 03", JugableAqui: "No"},
+    {Nombre: "Zombomb", Link: "Videojuegos/Zombomb.html", Empresa: "Terralude Game Studio", Lanzamiento: "2022 / 03 / 13", JugableAqui: "Sí"},
+];
+
+let Empresas = [
+    {Nombre: "Salem Electrónica", Link: "Empresas/SalemElectronica.html", Fundacion: "2024/02/11"},
+    {Nombre: "Terralude Game Studio", Link: "Empresas/TerraludeGameStudio.html", Fundacion: "20??/??/??"}
+];
+
+let Musica = [
+    {Nombre: "Moonlit Concourse", Compositor: "Kalinka", Videojuego: "Trasmoz: El Canto del Ave de la Muerte"},
+    {Nombre: "Moonlit Concourse", Compositor: "Kalinka", Videojuego: "Trasmoz: El Canto del Ave de la Muerte"},
+];
+
+/* ===== RENDER ===== */
+function renderTablas() {
+
+    let tablaP = document.querySelector("#tablaPersonas tbody");
+    Personas.forEach(p => {
+        tablaP.innerHTML += `
+        <tr>
+            <td><a href="${p.Link}">${p.Nombre}</a></td>
+            <td>${p.Empresa}</td>
+            <td>${p.Municipio}</td>
+        </tr>`;
+    });
+
+    let tablaJ = document.querySelector("#tablaJuegos tbody");
+    Juegos.forEach(j => {
+        tablaJ.innerHTML += `
+        <tr>
+            <td><a href="${j.Link}">${j.Nombre}</a></td>
+            <td>${j.Empresa}</td>
+            <td>${j.Lanzamiento}</td>
+            <td>${j.JugableAqui}</td>
+        </tr>`;
+    });
+
+    let tablaE = document.querySelector("#tablaEmpresas tbody");
+    Empresas.forEach(e => {
+        tablaE.innerHTML += `
+        <tr>
+            <td><a href="${e.Link}">${e.Nombre}</a></td>
+            <td>${e.Fundacion}</td>
+        </tr>`;
+    });
+
+        let tablaM = document.querySelector("#tablaMusica tbody");
+    Musica.forEach(m => {
+        tablaM.innerHTML += `
+        <tr>
+            <td>${m.Nombre}</td>
+            <td>${m.Compositor}</td>
+            <td>${m.Videojuego}</td>
+        </tr>`;
+    });
+}
+
+renderTablas();
+</script>
+
+</script>
+<div style="margin-top:10px; font-size:14px;">
+    Visitas:
+    <img src="https://hitwebcounter.com/counter/counter.php?page=21490660&style=0024&nbdigits=9&type=page&initCount=0" style="border:0; vertical-align:middle;">
+    Visitantes:
+    <img src="https://hitwebcounter.com/counter/counter.php?page=21490661&style=0024&nbdigits=9&type=ip&initCount=0" style="border:0; vertical-align:middle;">
+</div>
+
+<script>
+let tracks = [
+    { name: "Moonlit Concourse - Kalinka [Trasmoz: El Canto del Ave de la Muerte]", file: "Musica/Moonlit_Concourse-MB2.mp3" },
+    { name: "Moonlit Concourse - Kalinka [Trasmoz: El Canto del Ave de la Muerte]", file: "Musica/Moonlit_Concourse-MB2.mp3" },
+    { name: "Moonlit Concourse - Kalinka [Trasmoz: El Canto del Ave de la Muerte]", file: "Musica/Moonlit_Concourse-MB2.mp3" }
+];
+
+let current = 0;
+
+let audio = document.getElementById("audio");
+let btn = document.getElementById("playBtn");
+let label = document.getElementById("track");
+
+function loadTrack() {
+    audio.src = tracks[current].file;
+    label.innerText = tracks[current].name;
+}
+
+function togglePlay() {
+    if (audio.paused) {
+        audio.play();
+        btn.innerText = "Detener";
+    } else {
+        audio.pause();
+        btn.innerText = "Reproducir";
+    }
+}
+
+function nextTrack() {
+    current = (current + 1) % tracks.length;
+    loadTrack();
+    audio.play();
+    btn.innerText = "Detener";
+}
+
+function prevTrack() {
+    current = (current - 1 + tracks.length) % tracks.length;
+    loadTrack();
+    audio.play();
+    btn.innerText = "Detener";
+}
+
+/* cuando termina, pasa a la siguiente */
+audio.addEventListener("ended", nextTrack);
+
+/* cargar primera */
+loadTrack();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>A Hopeful Play</title>
+
+<link rel="stylesheet" href="../StyleCSSVideojuegos.css">
+
+<style>
+    /* Overlay para activar input */
+    .game-overlay{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.6);
+        color:white;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+        cursor:pointer;
+        z-index:10;
+    }
+
+    .iframe-wrap{
+        position:relative;
+        width:660px;
+        height:596px;
+    }
+
+    .iframe-wrap iframe{
+        width:100%;
+        height:100%;
+        border:0;
+    }
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <a href="../index.html">← Volver al Inicio</a>
+</header>
+
+<div class="container">
+
+    <div class="videogame-card">
+
+        <div class="main-panel">
+
+            <div class="videogame-header">
+
+                <div class="avatar-frame">
+                    <img src="https://img.itch.zone/aW1nLzcwOTcwMTkucG5n/315x250%23c/06oFjX.png" class="avatar">
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <h2>Información</h2>
+
+                <div class="info-item">
+                    <div class="label">Título</div>
+                    <div class="value">A Hopeful Play</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Desarrolladores</div>
+                    <div class="value"><a href="../Personas/CarlosRodriguez.html">Carlos Rodríguez</a></div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Fecha de Publicación</div>
+                    <div class="value">2021 / 09 / 26</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Género</div>
+                    <div class="value">Aventuras, Plataformas</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Herramientas</div>
+                    <div class="value">Unity</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Plataformas</div>
+                    <div class="value">Web, Windows</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Idiomas</div>
+                    <div class="value">Inglés</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Tiendas</div>
+                    <div class="value">
+                        <a href="https://carlos-7x.itch.io/a-hopeful-play">Itch.io</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section">
+                <h2>Descripción</h2>
+
+                <div class="text">
+                    Desconocida
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Jugar</h2>
+            
+                <div class="iframe-wrap">
+                    <div class="game-overlay" onclick="this.style.display='none'">
+                        Haz clic para jugar
+                    </div>
+            
+                    <iframe 
+                        src="https://html-classic.itch.zone/html/4509219/index.html"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="image-panel">
+
+            <h2>Imágenes</h2>
+            <img src="https://img.itch.zone/aW1hZ2UvMTE5MTkxMi83MDY4NzYwLnBuZw==/347x500/KW3tnO.png">
+            <img src="https://img.itch.zone/aW1hZ2UvMTE5MTkxMi83MDY4NzczLnBuZw==/347x500/SG%2FdxC.png">
+            <img src="https://img.itch.zone/aW1hZ2UvMTE5MTkxMi83MDY4Nzc0LnBuZw==/347x500/yBRC2z.png">
+            <img src="https://img.itch.zone/aW1hZ2UvMTE5MTkxMi83MDY4NzcyLnBuZw==/347x500/QzEsux.png">
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

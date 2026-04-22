@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #0f0f0f, #090909);
+    color: #eaeaea;
+    margin: 0;
+}
+
+/* Header */
+header {
+    background: #1a1a1a;
+    padding: 15px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+header a {
+    color: #ffd93d;
+    text-decoration: none;
+}
+
+/* Layout */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+}
+
+/* Cards */
+.card {
+    background: #18181c;
+    border-radius: 0px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7);
+}
+
+/* Sidebar */
+.sidebar {
+    text-align: center;
+    background: linear-gradient(180deg, #1a1a22, #141418);
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 0px;
+    object-fit: cover;
+    margin: auto;
+    margin-bottom: 15px;
+
+    border: 1px solid #d6c6ff;
+
+    box-shadow:
+        0 0 8px rgba(210, 150, 255, 0.6),
+        0 0 16px rgba(210, 150, 255, 0.4),
+        0 0 25px rgba(210, 150, 255, 0.2);
+}
+
+/* Nombre */
+.name {
+    color: #ffd93d;
+    font-size: 26px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+/* Info */
+.info {
+    text-align: left;
+}
+
+.info p {
+    margin: 10px 0;
+}
+
+.label {
+    color: #69b4ff;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(217, 217, 255, 0.3);
+}
+
+/* Sections */
+.section {
+    margin-bottom: 25px;
+}
+
+.section h3 {
+    position: relative;
+    padding: 10px 12px 10px 16px;
+    margin-bottom: 15px;
+
+    background: linear-gradient(90deg, #1f1f28, #18181c);
+    border-radius: 6px;
+
+    color: #d6c6ff;
+    text-shadow: 0 0 10px rgba(210, 150, 255, 0.3);
+}
+
+.section h3::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #c8c8c8;
+    border-radius: 4px;
+}
+
+/* Links */
+a {
+    color: #ffd93d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffe26b;
+    text-decoration: underline;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.6);
+}
+
+/* Texto largo */
+.text {
+    line-height: 1.6;
+    color: #eaeaea;
+}
