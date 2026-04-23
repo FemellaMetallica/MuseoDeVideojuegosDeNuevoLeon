@@ -343,17 +343,36 @@ let tracks = [
     {name: "Moonlit Concourse - Kalinka [Trasmoz: El Canto del Ave de la Muerte]", file: "Musica/MoonlitConcourse.mp3"}
 ];
 
+let shuffled = [];
 let current = 0;
 
 let audio = document.getElementById("audio");
 let btn = document.getElementById("playBtn");
 let label = document.getElementById("track");
 
-function loadTrack() {
-    audio.src = tracks[current].file;
-    label.innerText = tracks[current].name;
+/* Mezclar sin repetir */
+function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
 }
 
+/* Generar nueva lista mezclada */
+function generateShuffle() {
+    shuffled = shuffle(tracks);
+    current = 0;
+}
+
+/* Cargar canción */
+function loadTrack() {
+    audio.src = shuffled[current].file;
+    label.innerText = shuffled[current].name;
+}
+
+/* Play / Pause */
 function togglePlay() {
     if (audio.paused) {
         audio.play();
@@ -364,24 +383,38 @@ function togglePlay() {
     }
 }
 
+/* Siguiente */
 function nextTrack() {
-    current = (current + 1) % tracks.length;
+    current++;
+
+    if (current >= shuffled.length) {
+        generateShuffle(); // vuelve a mezclar al terminar
+    }
+
     loadTrack();
     audio.play();
     btn.innerText = "Detener";
 }
 
+/* Anterior */
 function prevTrack() {
-    current = (current - 1 + tracks.length) % tracks.length;
+    current--;
+
+    if (current < 0) {
+        generateShuffle();
+        current = shuffled.length - 1;
+    }
+
     loadTrack();
     audio.play();
     btn.innerText = "Detener";
 }
 
-/* cuando termina, pasa a la siguiente */
+/* Auto siguiente */
 audio.addEventListener("ended", nextTrack);
 
-/* cargar primera */
+/* INIT */
+generateShuffle();
 loadTrack();
 </script>
 
